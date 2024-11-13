@@ -1,4 +1,4 @@
-package com.szpejsoft.chucknorrisjokes.ui.theme
+package com.szpejsoft.chucknorrisjokes.screens.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

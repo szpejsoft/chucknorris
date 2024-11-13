@@ -1,4 +1,4 @@
-package com.szpejsoft.chucknorrisjokes.ui.theme
+package com.szpejsoft.chucknorrisjokes.screens.theme
 
 import androidx.compose.ui.graphics.Color
 
