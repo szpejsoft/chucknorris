@@ -1,34 +1,25 @@
 package com.szpejsoft.chucknorrisjokes.joke
 
 import com.szpejsoft.chucknorrisjokes.networking.ChuckNorrisApi
-import com.szpejsoft.chucknorrisjokes.networking.joke.JokeSchema
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class FetchRandomJokeUseCase @Inject constructor(
-    private val chuckNorrisApi: ChuckNorrisApi
-) {
+class FetchRandomJokeUseCase
+@Inject
+constructor(private val chuckNorrisApi: ChuckNorrisApi) {
 
-    sealed class RandomJokeResult {
-        data class Success(val joke: Joke) : RandomJokeResult()
-        data object Error : RandomJokeResult()
+    sealed class FetchRandomJokeResult {
+        data class Success(val joke: Joke) : FetchRandomJokeResult()
+        data object Error : FetchRandomJokeResult()
     }
 
-    suspend fun fetchRandomJoke(): RandomJokeResult {
+    suspend fun fetchRandomJoke(): FetchRandomJokeResult {
         return withContext(Dispatchers.IO) {
             val jokeSchema = chuckNorrisApi.getRandomJoke()
-            if (jokeSchema != null) {
-                RandomJokeResult.Success(jokeSchema.toJoke())
-            } else {
-                RandomJokeResult.Error
-            }
+            jokeSchema
+                ?.run { FetchRandomJokeResult.Success(jokeSchema.toJoke()) }
+                ?: FetchRandomJokeResult.Error
         }
     }
-
-    private fun JokeSchema.toJoke(): Joke = Joke(
-        id = id,
-        url = url,
-        value = value
-    )
 }
