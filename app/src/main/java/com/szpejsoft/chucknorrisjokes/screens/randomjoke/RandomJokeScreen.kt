@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.szpejsoft.chucknorrisjokes.joke.Joke
+import com.szpejsoft.chucknorrisjokes.screens.randomjoke.RandomJokeViewModel.RandomJokeResult
 import kotlinx.coroutines.launch
 
 @Composable
@@ -43,12 +44,13 @@ fun RandomJokeScreen(
                     .padding(horizontal = 12.dp)
             ) {
                 when (randomJokeResult) {
-                    is RandomJokeViewModel.RandomJokeResult.Success ->
-                        ShowJoke(padding, randomJokeResult.joke) { scope.launch { viewModel.fetchRandomJoke() } }
+                    is RandomJokeResult.Success -> ShowJoke(
+                        padding,
+                        randomJokeResult.joke
+                    ) { scope.launch { viewModel.fetchRandomJoke() } }
 
-                    is RandomJokeViewModel.RandomJokeResult.Error -> ShowError { scope.launch { viewModel.fetchRandomJoke() } }
-
-                    RandomJokeViewModel.RandomJokeResult.None -> ShowInitialState()
+                    is RandomJokeResult.Error -> ShowError { scope.launch { viewModel.fetchRandomJoke() } }
+                    RandomJokeResult.None -> ShowInitialState()
                 }
             }
         }
