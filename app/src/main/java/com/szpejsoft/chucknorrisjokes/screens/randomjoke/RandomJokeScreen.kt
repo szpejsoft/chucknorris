@@ -3,14 +3,11 @@ package com.szpejsoft.chucknorrisjokes.screens.randomjoke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,25 +33,14 @@ fun RandomJokeScreen(
     LaunchedEffect(Unit) {
         viewModel.fetchRandomJoke()
     }
-    Scaffold(
-        content = { padding ->
-            Surface(
-                modifier = Modifier
-                    .padding(padding)
-                    .padding(horizontal = 12.dp)
-            ) {
-                when (randomJokeResult) {
-                    is RandomJokeResult.Success -> ShowJoke(
-                        padding,
-                        randomJokeResult.joke
-                    ) { scope.launch { viewModel.fetchRandomJoke() } }
 
-                    is RandomJokeResult.Error -> ShowError { scope.launch { viewModel.fetchRandomJoke() } }
-                    RandomJokeResult.None -> ShowInitialState()
-                }
-            }
-        }
-    )
+    when (randomJokeResult) {
+        is RandomJokeResult.Success -> ShowJoke(
+            randomJokeResult.joke
+        ) { scope.launch { viewModel.fetchRandomJoke() } }
+        is RandomJokeResult.Error -> ShowError { scope.launch { viewModel.fetchRandomJoke() } }
+        RandomJokeResult.None -> ShowInitialState()
+    }
 }
 
 @Composable
@@ -86,10 +72,8 @@ private fun ShowError(
     )
 }
 
-
 @Composable
 fun ShowJoke(
-    padding: PaddingValues,
     joke: Joke,
     onNextJokeClicked: () -> Unit
 ) {

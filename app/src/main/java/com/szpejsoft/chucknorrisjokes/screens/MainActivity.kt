@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.szpejsoft.chucknorrisjokes.screens.jokesbyquery.JokesByQueryScreen
+import com.szpejsoft.chucknorrisjokes.screens.main.MainScreen
 import com.szpejsoft.chucknorrisjokes.screens.randomjoke.RandomJokeScreen
 import com.szpejsoft.chucknorrisjokes.screens.theme.Theme
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,17 +19,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Theme {
-                JokesByQueryScreen()
+               MainScreen()
             }
         }
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Theme {
-        RandomJokeScreen()
+       MainScreen()
     }
 }
