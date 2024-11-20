@@ -4,7 +4,7 @@ import com.szpejsoft.chucknorrisjokes.networking.joke.JokeSchema
 
 fun JokeSchema.toJoke(): Joke = Joke(
     id = id,
-    url = url,
+    iconUrl = iconUrl,
     value = value
 )
 

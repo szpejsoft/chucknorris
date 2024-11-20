@@ -50,6 +50,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // images
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network)
+
     // dependency injection
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
