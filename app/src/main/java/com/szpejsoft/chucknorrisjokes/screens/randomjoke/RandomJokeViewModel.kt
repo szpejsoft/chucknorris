@@ -17,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RandomJokeViewModel
-@Inject constructor(
+@Inject
+constructor(
     private val fetchRandomJokeUseCase: FetchRandomJokeUseCase
 ) : ViewModel() {
     sealed class RandomJokeResult {

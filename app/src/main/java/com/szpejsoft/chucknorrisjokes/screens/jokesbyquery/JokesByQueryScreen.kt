@@ -1,7 +1,9 @@
 package com.szpejsoft.chucknorrisjokes.screens.jokesbyquery
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,7 +15,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -50,7 +52,10 @@ fun JokesByQueryScreen(
                     .padding(padding)
                     .padding(horizontal = 12.dp)
             ) {
-                Column {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+
+                ) {
                     SearchBar(query = searchQuery.value,
                         onQueryChange = { query -> searchQuery.value = query },
                         onSearch = { scope.launch { viewModel.fetchJokesByQuery(searchQuery.value) } }
@@ -105,12 +110,21 @@ private fun ShowError(
 
 @Composable
 fun ShowJokes(jokes: List<Joke>) {
-    LazyColumn {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+      //      .padding(vertical = 4.dp),
+      //  verticalArrangement = Arrangement.spacedBy(16.dp),
+     //   contentPadding = PaddingValues(top = 12.dp, bottom = 12.dp)
+    ) {
         items(jokes.size) { index ->
-            Box(
-                modifier = Modifier.padding(top = 4.dp)
-            ) { Text(text = jokes[index].value) }
-
+            Box { Text(text = jokes[index].value) }
+            if (index < jokes.size - 1) {
+                HorizontalDivider(
+                    modifier = Modifier.padding(top = 16.dp),
+                    thickness = 1.dp
+                )
+            }
         }
     }
 }

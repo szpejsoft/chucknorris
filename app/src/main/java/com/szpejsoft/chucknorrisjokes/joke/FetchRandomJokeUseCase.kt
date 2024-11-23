@@ -1,5 +1,7 @@
 package com.szpejsoft.chucknorrisjokes.joke
 
+import com.szpejsoft.chucknorrisjokes.joke.FetchRandomJokeUseCase.FetchRandomJokeResult.Error
+import com.szpejsoft.chucknorrisjokes.joke.FetchRandomJokeUseCase.FetchRandomJokeResult.Success
 import com.szpejsoft.chucknorrisjokes.networking.ChuckNorrisApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -18,8 +20,8 @@ constructor(private val chuckNorrisApi: ChuckNorrisApi) {
         return withContext(Dispatchers.IO) {
             val jokeSchema = chuckNorrisApi.getRandomJoke()
             jokeSchema
-                ?.run { FetchRandomJokeResult.Success(jokeSchema.toJoke()) }
-                ?: FetchRandomJokeResult.Error
+                ?.run { Success(jokeSchema.toJoke()) }
+                ?: Error
         }
     }
 }

@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.szpejsoft.chucknorrisjokes.screens.categories.CategoriesScreen
+import com.szpejsoft.chucknorrisjokes.screens.jokebycategory.JokeByCategoryScreen
 import com.szpejsoft.chucknorrisjokes.screens.jokesbyquery.JokesByQueryScreen
 import com.szpejsoft.chucknorrisjokes.screens.navigation.BottomNavBar
 import com.szpejsoft.chucknorrisjokes.screens.navigation.Navigator
@@ -46,8 +48,8 @@ fun MainScreenContent(
     padding: PaddingValues,
     navigator: Navigator
 ) {
-    val navController = rememberNavController()
-    navigator.setNavController(navController)
+    val tabNavController = rememberNavController()
+    navigator.setTabNavController(tabNavController)
 
     Surface(
         modifier = Modifier
@@ -56,7 +58,7 @@ fun MainScreenContent(
     ) {
         NavHost(
             modifier = Modifier.fillMaxSize(),
-            navController = navController,
+            navController = tabNavController,
             startDestination = Route.RandomJoke.routeName
         ) {
             composable(Route.RandomJoke.routeName) {
@@ -64,6 +66,26 @@ fun MainScreenContent(
             }
             composable(Route.JokesByQuery.routeName) {
                 JokesByQueryScreen()
+            }
+            composable(Route.Categories.routeName) {
+                val nestedNavController = rememberNavController()
+                navigator.setNestedNavController(nestedNavController)
+                NavHost(
+                    navController = nestedNavController,
+                    startDestination = Route.Categories.routeName
+                ) {
+                    composable(route = Route.Categories.routeName) {
+                        CategoriesScreen(
+                            onCategoryClicked = { category -> navigator.toRoute(Route.JokeByCategory(category)) }
+                        )
+                    }
+                    composable(route = Route.JokeByCategory().routeName) {
+                        val category = remember { it.arguments?.getString("category")!! }
+                        JokeByCategoryScreen(category = category)
+                    }
+
+                }
+
             }
         }
     }

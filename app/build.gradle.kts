@@ -73,6 +73,7 @@ dependencies {
 
     //test
     testImplementation(libs.junit)
+    testImplementation(libs.assertj.core)
 
     //android test
     androidTestImplementation(libs.androidx.junit)

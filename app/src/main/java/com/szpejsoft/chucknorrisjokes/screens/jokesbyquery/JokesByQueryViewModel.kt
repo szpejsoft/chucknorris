@@ -16,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class JokesByQueryViewModel
-@Inject constructor(
+@Inject
+constructor(
     private val fetchJokesByQueryUseCase: FetchJokesByQueryUseCase
 ) : ViewModel() {
     sealed class JokesByQueryResult {
@@ -25,8 +26,8 @@ class JokesByQueryViewModel
         data object Error : JokesByQueryResult()
     }
 
+    val jokesByQueryFlow: StateFlow<JokesByQueryResult> get() = _jokesByQueryFlow
     private val _jokesByQueryFlow = MutableStateFlow<JokesByQueryResult>(None)
-    val jokesByQueryFlow: StateFlow<JokesByQueryResult> = _jokesByQueryFlow
 
     suspend fun fetchJokesByQuery(query: String) {
         withContext(Dispatchers.Main.immediate) {

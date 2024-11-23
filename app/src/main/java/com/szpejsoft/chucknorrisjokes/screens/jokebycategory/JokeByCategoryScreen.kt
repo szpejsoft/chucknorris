@@ -1,4 +1,4 @@
-package com.szpejsoft.chucknorrisjokes.screens.randomjoke
+package com.szpejsoft.chucknorrisjokes.screens.jokebycategory
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,27 +24,33 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import com.szpejsoft.chucknorrisjokes.joke.Joke
-import com.szpejsoft.chucknorrisjokes.screens.randomjoke.RandomJokeViewModel.RandomJokeResult
+import com.szpejsoft.chucknorrisjokes.screens.jokebycategory.JokeByCategoryViewModel.JokeByCategoryResult.Error
+import com.szpejsoft.chucknorrisjokes.screens.jokebycategory.JokeByCategoryViewModel.JokeByCategoryResult.None
+import com.szpejsoft.chucknorrisjokes.screens.jokebycategory.JokeByCategoryViewModel.JokeByCategoryResult.Success
 import kotlinx.coroutines.launch
 
 @Composable
-fun RandomJokeScreen(
-    viewModel: RandomJokeViewModel = hiltViewModel()
+fun JokeByCategoryScreen(
+    category: String,
+    viewModel: JokeByCategoryViewModel = hiltViewModel()
+
 ) {
     val scope = rememberCoroutineScope()
-    val randomJokeResult = viewModel.randomJokeFlow.collectAsState().value
+    val jokeByCategoryResult = viewModel.jokeByCategoryFlow.collectAsState().value
 
     LaunchedEffect(Unit) {
-        viewModel.fetchRandomJoke()
+        scope.launch { viewModel.fetchJokeByCategory(category) }
+    }
+    Text(text = "Category: $category")
+    when (jokeByCategoryResult) {
+        Error -> ShowError { scope.launch { viewModel.fetchJokeByCategory(category) } }
+        None -> ShowInitialState()
+        is Success -> ShowJoke(jokeByCategoryResult.joke) { scope.launch { viewModel.fetchJokeByCategory("animal") } }
     }
 
-    when (randomJokeResult) {
-        is RandomJokeResult.Success -> ShowJoke(randomJokeResult.joke) { scope.launch { viewModel.fetchRandomJoke() } }
-        is RandomJokeResult.Error -> ShowError { scope.launch { viewModel.fetchRandomJoke() } }
-        RandomJokeResult.None -> ShowInitialState()
-    }
 }
 
+//TODO refactor - move below composables with ones from RandomJokeScreen to separate file?
 @Composable
 private fun ShowInitialState() {
     Box(

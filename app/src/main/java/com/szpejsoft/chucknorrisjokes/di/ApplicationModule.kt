@@ -1,6 +1,9 @@
 package com.szpejsoft.chucknorrisjokes.di
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.addAdapter
 import com.szpejsoft.chucknorrisjokes.networking.ChuckNorrisApi
+import com.szpejsoft.chucknorrisjokes.networking.category.CategoriesAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,16 +20,19 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun retrofit(): Retrofit{
+    fun retrofit(): Retrofit {
         val httpClient = OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
+            .addInterceptor(
+                HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+            .build()
+
+        val moshi = Moshi.Builder()
+            .add(CategoriesAdapter)
             .build()
 
         return Retrofit.Builder()
             .baseUrl("https://api.chucknorris.io/")
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(httpClient)
             .build()
     }
@@ -36,6 +42,5 @@ class ApplicationModule {
     fun chuckNorrisApi(retrofit: Retrofit): ChuckNorrisApi {
         return retrofit.create(ChuckNorrisApi::class.java)
     }
-
 
 }

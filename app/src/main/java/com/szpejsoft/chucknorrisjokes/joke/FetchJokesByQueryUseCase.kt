@@ -1,5 +1,6 @@
 package com.szpejsoft.chucknorrisjokes.joke
 
+import com.szpejsoft.chucknorrisjokes.joke.FetchJokesByQueryUseCase.FetchJokesByQueryResult.*
 import com.szpejsoft.chucknorrisjokes.networking.ChuckNorrisApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -18,8 +19,8 @@ constructor(private val chuckNorrisApi: ChuckNorrisApi) {
         return withContext(Dispatchers.IO) {
             val jokeListSchema = chuckNorrisApi.getJokesByQuery(query)
             jokeListSchema
-                ?.run { FetchJokesByQueryResult.Success(jokeListSchema.jokes.toJokes()) }
-                ?: FetchJokesByQueryResult.Error
+                ?.run { Success(jokeListSchema.jokes.toJokes()) }
+                ?: Error
         }
     }
 }
