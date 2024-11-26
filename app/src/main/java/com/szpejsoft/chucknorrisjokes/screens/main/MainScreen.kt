@@ -9,11 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.szpejsoft.chucknorrisjokes.R
 import com.szpejsoft.chucknorrisjokes.screens.categories.CategoriesScreen
+import com.szpejsoft.chucknorrisjokes.screens.composables.TopBar
 import com.szpejsoft.chucknorrisjokes.screens.jokebycategory.JokeByCategoryScreen
 import com.szpejsoft.chucknorrisjokes.screens.jokesbyquery.JokesByQueryScreen
 import com.szpejsoft.chucknorrisjokes.screens.navigation.BottomNavBar
@@ -28,8 +31,14 @@ fun MainScreen() {
     val navigator = remember { Navigator() }
     val currentBottomTab = navigator.currentTab.collectAsState().value
 
-
     Scaffold(
+        topBar = {
+            TopBar(
+                title = stringResource(R.string.app_name),
+                isRootRoute = navigator.isRootRoute.collectAsState().value,
+                onBackClicked = { navigator.navigateBack() }
+            )
+        },
         content = { padding ->
             MainScreenContent(padding, navigator)
         },
@@ -62,10 +71,28 @@ fun MainScreenContent(
             startDestination = Route.RandomJoke.routeName
         ) {
             composable(Route.RandomJoke.routeName) {
-                RandomJokeScreen()
+                val randomJokeNavController = rememberNavController()
+                navigator.setNestedNavController(randomJokeNavController)
+                NavHost(
+                    navController = randomJokeNavController,
+                    startDestination = Route.RandomJoke.routeName
+                ) {
+                    composable(Route.RandomJoke.routeName) {
+                        RandomJokeScreen()
+                    }
+                }
             }
             composable(Route.JokesByQuery.routeName) {
-                JokesByQueryScreen()
+                val jokesByQueryNavController = rememberNavController()
+                navigator.setNestedNavController(jokesByQueryNavController)
+                NavHost(
+                    navController = jokesByQueryNavController,
+                    startDestination = Route.JokesByQuery.routeName
+                ) {
+                    composable(route = Route.JokesByQuery.routeName) {
+                        JokesByQueryScreen()
+                    }
+                }
             }
             composable(Route.Categories.routeName) {
                 val nestedNavController = rememberNavController()
@@ -83,9 +110,7 @@ fun MainScreenContent(
                         val category = remember { it.arguments?.getString("category")!! }
                         JokeByCategoryScreen(category = category)
                     }
-
                 }
-
             }
         }
     }

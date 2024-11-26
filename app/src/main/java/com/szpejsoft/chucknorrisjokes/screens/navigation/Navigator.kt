@@ -1,5 +1,6 @@
 package com.szpejsoft.chucknorrisjokes.screens.navigation
 
+import android.util.Log
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -94,6 +95,7 @@ class Navigator {
     }
 
     fun navigateBack() {
+        Log.d("ptsz", "navigateBack")
         if (nestedNavController?.popBackStack() == false) tabNavController.popBackStack()
     }
 
