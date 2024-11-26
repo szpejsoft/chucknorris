@@ -1,7 +1,6 @@
 package com.szpejsoft.chucknorrisjokes.screens.randomjoke
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +22,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import com.szpejsoft.chucknorrisjokes.joke.Joke
+import com.szpejsoft.chucknorrisjokes.screens.composables.AlertDialogWithButton
+import com.szpejsoft.chucknorrisjokes.screens.composables.ShowInitialState
 import com.szpejsoft.chucknorrisjokes.screens.randomjoke.RandomJokeViewModel.RandomJokeResult
 import kotlinx.coroutines.launch
 
@@ -40,38 +40,13 @@ fun RandomJokeScreen(
 
     when (randomJokeResult) {
         is RandomJokeResult.Success -> ShowJoke(randomJokeResult.joke) { scope.launch { viewModel.fetchRandomJoke() } }
-        is RandomJokeResult.Error -> ShowError { scope.launch { viewModel.fetchRandomJoke() } }
+        is RandomJokeResult.Error -> AlertDialogWithButton(
+            message = "No joke for you :(. Try again later.",
+            buttonText = "Ok"
+        ) { scope.launch { viewModel.fetchRandomJoke() } }
+
         RandomJokeResult.None -> ShowInitialState()
     }
-}
-
-@Composable
-private fun ShowInitialState() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Loading...")
-    }
-}
-
-@Composable
-private fun ShowError(
-    onOkClicked: () -> Unit
-) {
-    AlertDialog(
-        text = {
-            Text("No joke for you :(. Try again later.")
-        },
-        onDismissRequest = { },
-        confirmButton = {
-            Button(
-                onClick = onOkClicked
-            ) {
-                Text("OK")
-            }
-        },
-    )
 }
 
 @Composable

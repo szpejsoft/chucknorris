@@ -1,7 +1,6 @@
 package com.szpejsoft.chucknorrisjokes.screens.jokebycategory
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +22,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import com.szpejsoft.chucknorrisjokes.joke.Joke
+import com.szpejsoft.chucknorrisjokes.screens.composables.ShowInitialState
+import com.szpejsoft.chucknorrisjokes.screens.composables.AlertDialogWithButton
 import com.szpejsoft.chucknorrisjokes.screens.jokebycategory.JokeByCategoryViewModel.JokeByCategoryResult.Error
 import com.szpejsoft.chucknorrisjokes.screens.jokebycategory.JokeByCategoryViewModel.JokeByCategoryResult.None
 import com.szpejsoft.chucknorrisjokes.screens.jokebycategory.JokeByCategoryViewModel.JokeByCategoryResult.Success
@@ -43,41 +43,14 @@ fun JokeByCategoryScreen(
     }
     Text(text = "Category: $category")
     when (jokeByCategoryResult) {
-        Error -> ShowError { scope.launch { viewModel.fetchJokeByCategory(category) } }
+        Error -> AlertDialogWithButton(
+            message = "No joke for you :(. Try again later.",
+            buttonText = "Ok"
+        ) { scope.launch { viewModel.fetchJokeByCategory(category) } }
+
         None -> ShowInitialState()
         is Success -> ShowJoke(jokeByCategoryResult.joke) { scope.launch { viewModel.fetchJokeByCategory("animal") } }
     }
-
-}
-
-//TODO refactor - move below composables with ones from RandomJokeScreen to separate file?
-@Composable
-private fun ShowInitialState() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Loading...")
-    }
-}
-
-@Composable
-private fun ShowError(
-    onOkClicked: () -> Unit
-) {
-    AlertDialog(
-        text = {
-            Text("No joke for you :(. Try again later.")
-        },
-        onDismissRequest = { },
-        confirmButton = {
-            Button(
-                onClick = onOkClicked
-            ) {
-                Text("OK")
-            }
-        },
-    )
 }
 
 @Composable

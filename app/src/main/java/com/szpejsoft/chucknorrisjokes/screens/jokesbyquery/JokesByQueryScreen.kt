@@ -1,21 +1,15 @@
 package com.szpejsoft.chucknorrisjokes.screens.jokesbyquery
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -32,7 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.szpejsoft.chucknorrisjokes.joke.Joke
+import com.szpejsoft.chucknorrisjokes.screens.composables.AlertDialogWithButton
+import com.szpejsoft.chucknorrisjokes.screens.composables.ShowInitialState
+import com.szpejsoft.chucknorrisjokes.screens.composables.ShowList
 import com.szpejsoft.chucknorrisjokes.screens.jokesbyquery.JokesByQueryViewModel.JokesByQueryResult
 import kotlinx.coroutines.launch
 
@@ -52,24 +48,19 @@ fun JokesByQueryScreen(
                     .padding(padding)
                     .padding(horizontal = 12.dp)
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize()
-
-                ) {
-                    SearchBar(query = searchQuery.value,
+                Column(modifier = Modifier.fillMaxSize()) {
+                    SearchBar(
+                        query = searchQuery.value,
                         onQueryChange = { query -> searchQuery.value = query },
                         onSearch = { scope.launch { viewModel.fetchJokesByQuery(searchQuery.value) } }
                     )
 
                     when (jokesByQueryResult) {
-                        is JokesByQueryResult.Success -> ShowJokes(jokesByQueryResult.jokes)
-                        is JokesByQueryResult.Error -> ShowError {
-                            scope.launch {
-                                viewModel.fetchJokesByQuery(
-                                    searchQuery.value
-                                )
-                            }
-                        }
+                        is JokesByQueryResult.Success -> ShowList(jokesByQueryResult.jokes.map { it.value })
+                        is JokesByQueryResult.Error -> AlertDialogWithButton(
+                            message = "No jokes for you :(. Try again later.",
+                            buttonText = "Ok"
+                        ) { scope.launch { viewModel.fetchJokesByQuery(searchQuery.value) } }
 
                         JokesByQueryResult.None -> ShowInitialState()
                     }
@@ -77,56 +68,6 @@ fun JokesByQueryScreen(
             }
         }
     )
-}
-
-@Composable
-private fun ShowInitialState() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "No jokes for you :(")
-    }
-}
-
-@Composable
-private fun ShowError(
-    onOkClicked: () -> Unit
-) {
-    AlertDialog(
-        text = {
-            Text("No jokes for you :(. Try again later.")
-        },
-        onDismissRequest = { },
-        confirmButton = {
-            Button(
-                onClick = onOkClicked
-            ) {
-                Text("OK")
-            }
-        },
-    )
-}
-
-@Composable
-fun ShowJokes(jokes: List<Joke>) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-      //      .padding(vertical = 4.dp),
-      //  verticalArrangement = Arrangement.spacedBy(16.dp),
-     //   contentPadding = PaddingValues(top = 12.dp, bottom = 12.dp)
-    ) {
-        items(jokes.size) { index ->
-            Box { Text(text = jokes[index].value) }
-            if (index < jokes.size - 1) {
-                HorizontalDivider(
-                    modifier = Modifier.padding(top = 16.dp),
-                    thickness = 1.dp
-                )
-            }
-        }
-    }
 }
 
 @Composable

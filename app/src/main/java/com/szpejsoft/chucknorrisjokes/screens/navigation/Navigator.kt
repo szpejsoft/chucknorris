@@ -1,6 +1,5 @@
 package com.szpejsoft.chucknorrisjokes.screens.navigation
 
-import android.util.Log
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
