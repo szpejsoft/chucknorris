@@ -3,8 +3,8 @@ package com.szpejsoft.chucknorrisjokes.screens.jokesbyquery
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import com.szpejsoft.chucknorrisjokes.common.screentitle.SetScreenTitleUseCase
-import com.szpejsoft.chucknorrisjokes.joke.FetchJokesByQueryUseCase
-import com.szpejsoft.chucknorrisjokes.joke.FetchJokesByQueryUseCase.FetchJokesByQueryResult
+import com.szpejsoft.chucknorrisjokes.joke.usecases.FetchJokesByQueryUseCase
+import com.szpejsoft.chucknorrisjokes.joke.usecases.FetchJokesByQueryUseCase.FetchJokesByQueryResult
 import com.szpejsoft.chucknorrisjokes.joke.Joke
 import com.szpejsoft.chucknorrisjokes.screens.jokesbyquery.JokesByQueryViewModel.JokesByQueryResult.Error
 import com.szpejsoft.chucknorrisjokes.screens.jokesbyquery.JokesByQueryViewModel.JokesByQueryResult.None

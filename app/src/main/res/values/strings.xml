@@ -2,4 +2,6 @@
     <string name="app_name">Chuck Norris Jokes</string>
     <string name="screen_joke_by_category_title">Category: %s</string>
     <string name="screen_categories_title">Categories</string>
+    <string name="screen_favourite_jokes_title">Favourite jokes</string>
+    <string name="message_no_favourite_jokes">No favourite jokes, prepare for a roundhouse kick…</string>
 </resources>

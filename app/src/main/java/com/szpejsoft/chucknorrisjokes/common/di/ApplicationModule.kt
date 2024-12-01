@@ -1,7 +1,10 @@
 package com.szpejsoft.chucknorrisjokes.common.di
 
+import android.app.Application
+import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.szpejsoft.chucknorrisjokes.common.screentitle.AppBarTitleManager
+import com.szpejsoft.chucknorrisjokes.database.JokeDatabase
 import com.szpejsoft.chucknorrisjokes.networking.ChuckNorrisApi
 import com.szpejsoft.chucknorrisjokes.networking.category.CategoriesAdapter
 import dagger.Module
@@ -39,9 +42,20 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun chuckNorrisApi(retrofit: Retrofit): ChuckNorrisApi {
-        return retrofit.create(ChuckNorrisApi::class.java)
-    }
+    fun chuckNorrisApi(retrofit: Retrofit): ChuckNorrisApi =
+        retrofit.create(ChuckNorrisApi::class.java)
+
+    @Provides
+    @Singleton
+    fun jokesDatabase(app: Application): JokeDatabase =
+        Room.databaseBuilder(
+            app,
+            JokeDatabase::class.java,
+            "chuck_norris_jokes.db"
+        ).build()
+
+    @Provides
+    fun favouriteJokeDao(jokeDatabase: JokeDatabase) = jokeDatabase.favouriteJokeDao
 
     @Provides
     @Singleton

@@ -2,7 +2,7 @@ package com.szpejsoft.chucknorrisjokes.screens.jokebycategory
 
 import androidx.lifecycle.ViewModel
 import com.szpejsoft.chucknorrisjokes.common.screentitle.SetScreenTitleUseCase
-import com.szpejsoft.chucknorrisjokes.joke.FetchRandomJokeByCategoryUseCase
+import com.szpejsoft.chucknorrisjokes.joke.usecases.FetchRandomJokeByCategoryUseCase
 import com.szpejsoft.chucknorrisjokes.joke.Joke
 import com.szpejsoft.chucknorrisjokes.screens.jokebycategory.JokeByCategoryViewModel.JokeByCategoryResult.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.String
-import com.szpejsoft.chucknorrisjokes.joke.FetchRandomJokeByCategoryUseCase.FetchJokeByCategoryResult.Error as UseCaseError
-import com.szpejsoft.chucknorrisjokes.joke.FetchRandomJokeByCategoryUseCase.FetchJokeByCategoryResult.Success as UseCaseSuccess
+import com.szpejsoft.chucknorrisjokes.joke.usecases.FetchRandomJokeByCategoryUseCase.FetchJokeByCategoryResult.Error as UseCaseError
+import com.szpejsoft.chucknorrisjokes.joke.usecases.FetchRandomJokeByCategoryUseCase.FetchJokeByCategoryResult.Success as UseCaseSuccess
 
 @HiltViewModel
 class JokeByCategoryViewModel

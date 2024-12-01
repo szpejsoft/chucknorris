@@ -24,7 +24,6 @@ class Navigator {
     private var tabNavControllerObserveJob: Job? = null
     private var nestedNavControllerObserveJob: Job? = null
 
-
     private lateinit var tabNavController: NavHostController
     private var nestedNavController: NavHostController? = null
 
@@ -34,10 +33,13 @@ class Navigator {
         tabNavControllerObserveJob = scope.launch {
             navHostController.currentBackStackEntryFlow
                 .map { backStackEntry ->
+                    Log.d("ptsz", "backstackentryflow: ${backStackEntry.destination}")
                     val bottomTab = when (val routeName = backStackEntry.destination.route) {
                         Route.RandomJoke.routeName -> BottomBarTab.Random
                         Route.JokesByQuery.routeName -> BottomBarTab.Query
                         Route.Categories.routeName -> BottomBarTab.Categories
+                        Route.Favourites.routeName -> BottomBarTab.Favourites
+                        null -> null
                         else -> throw RuntimeException("Unknown route $routeName")
                     }
                     _currentTab.value = bottomTab
@@ -61,6 +63,7 @@ class Navigator {
                             Route.JokeByCategory(args?.getString("category")!!)
                         }
 
+                        Route.Favourites.routeName -> Route.Favourites
                         null -> null
                         else -> throw RuntimeException("Unknown route $routeName")
                     }
@@ -77,6 +80,7 @@ class Navigator {
             BottomBarTab.Query -> Route.JokesByQuery
             BottomBarTab.Random -> Route.RandomJoke
             BottomBarTab.Categories -> Route.Categories
+            BottomBarTab.Favourites -> Route.Favourites
         }
 
         tabNavController.navigate(route.routeName) {
@@ -95,12 +99,16 @@ class Navigator {
     }
 
     fun navigateBack() {
-        Log.d("ptsz", "navigateBack")
         if (nestedNavController?.popBackStack() == false) tabNavController.popBackStack()
     }
 
     companion object {
-        val BOTTOM_TABS = listOf(BottomBarTab.Random, BottomBarTab.Query, BottomBarTab.Categories)
+        val BOTTOM_TABS = listOf(
+            BottomBarTab.Random,
+            BottomBarTab.Query,
+            BottomBarTab.Categories,
+            BottomBarTab.Favourites
+        )
     }
 
 }

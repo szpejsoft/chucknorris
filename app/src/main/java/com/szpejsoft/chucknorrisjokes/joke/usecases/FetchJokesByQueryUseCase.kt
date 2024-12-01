@@ -1,7 +1,9 @@
-package com.szpejsoft.chucknorrisjokes.joke
+package com.szpejsoft.chucknorrisjokes.joke.usecases
 
-import com.szpejsoft.chucknorrisjokes.joke.FetchJokesByQueryUseCase.FetchJokesByQueryResult.Error
-import com.szpejsoft.chucknorrisjokes.joke.FetchJokesByQueryUseCase.FetchJokesByQueryResult.Success
+import com.szpejsoft.chucknorrisjokes.joke.Joke
+import com.szpejsoft.chucknorrisjokes.joke.toJokes
+import com.szpejsoft.chucknorrisjokes.joke.usecases.FetchJokesByQueryUseCase.FetchJokesByQueryResult.Error
+import com.szpejsoft.chucknorrisjokes.joke.usecases.FetchJokesByQueryUseCase.FetchJokesByQueryResult.Success
 import com.szpejsoft.chucknorrisjokes.networking.ChuckNorrisApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

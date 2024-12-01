@@ -58,14 +58,19 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
 
-    //network
+    // network
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi.converter)
     implementation(libs.retrofit.logging.interceptor)
-    // Json
+
+    // json
     implementation(libs.moshi)
     ksp(libs.moshi.codegen)
 
+    // database
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)

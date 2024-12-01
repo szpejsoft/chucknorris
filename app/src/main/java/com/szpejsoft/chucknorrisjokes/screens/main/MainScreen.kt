@@ -1,6 +1,5 @@
 package com.szpejsoft.chucknorrisjokes.screens.main
 
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,10 +15,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.szpejsoft.chucknorrisjokes.R
 import com.szpejsoft.chucknorrisjokes.common.screentitle.Title
 import com.szpejsoft.chucknorrisjokes.screens.categories.CategoriesScreen
 import com.szpejsoft.chucknorrisjokes.screens.composables.TopBar
+import com.szpejsoft.chucknorrisjokes.screens.favouritejokes.FavouriteJokesScreen
 import com.szpejsoft.chucknorrisjokes.screens.jokebycategory.JokeByCategoryScreen
 import com.szpejsoft.chucknorrisjokes.screens.jokesbyquery.JokesByQueryScreen
 import com.szpejsoft.chucknorrisjokes.screens.navigation.BottomNavBar
@@ -27,7 +26,6 @@ import com.szpejsoft.chucknorrisjokes.screens.navigation.Navigator
 import com.szpejsoft.chucknorrisjokes.screens.navigation.Navigator.Companion.BOTTOM_TABS
 import com.szpejsoft.chucknorrisjokes.screens.navigation.Route
 import com.szpejsoft.chucknorrisjokes.screens.randomjoke.RandomJokeScreen
-import kotlinx.coroutines.flow.map
 
 @Composable
 fun MainScreen(
@@ -78,10 +76,10 @@ fun MainScreenContent(
             startDestination = Route.RandomJoke.routeName
         ) {
             composable(Route.RandomJoke.routeName) {
-                val randomJokeNavController = rememberNavController()
-                navigator.setNestedNavController(randomJokeNavController)
+                val nestedNavController = rememberNavController()
+                navigator.setNestedNavController(nestedNavController)
                 NavHost(
-                    navController = randomJokeNavController,
+                    navController = nestedNavController,
                     startDestination = Route.RandomJoke.routeName
                 ) {
                     composable(Route.RandomJoke.routeName) {
@@ -90,10 +88,10 @@ fun MainScreenContent(
                 }
             }
             composable(Route.JokesByQuery.routeName) {
-                val jokesByQueryNavController = rememberNavController()
-                navigator.setNestedNavController(jokesByQueryNavController)
+                val nestedNavController = rememberNavController()
+                navigator.setNestedNavController(nestedNavController)
                 NavHost(
-                    navController = jokesByQueryNavController,
+                    navController = nestedNavController,
                     startDestination = Route.JokesByQuery.routeName
                 ) {
                     composable(route = Route.JokesByQuery.routeName) {
@@ -119,12 +117,23 @@ fun MainScreenContent(
                     }
                 }
             }
+            composable(Route.Favourites.routeName) {
+                val nestedNavController = rememberNavController()
+                navigator.setNestedNavController(nestedNavController)
+                NavHost(
+                    navController = nestedNavController,
+                    startDestination = Route.Favourites.routeName
+                ) {
+                    composable(route = Route.Favourites.routeName) {
+                        FavouriteJokesScreen()
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
 fun getScreenTitleText(title: Title): String {
-    Log.d("ptsz", "getScreenTitleText: $title ")
     return if (title.hasText) title.text!! else stringResource(id = title.resId!!)
 }

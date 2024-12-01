@@ -3,8 +3,8 @@ package com.szpejsoft.chucknorrisjokes.screens.randomjoke
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import com.szpejsoft.chucknorrisjokes.common.screentitle.SetScreenTitleUseCase
-import com.szpejsoft.chucknorrisjokes.joke.FetchRandomJokeUseCase
-import com.szpejsoft.chucknorrisjokes.joke.FetchRandomJokeUseCase.FetchRandomJokeResult
+import com.szpejsoft.chucknorrisjokes.joke.usecases.FetchRandomJokeUseCase
+import com.szpejsoft.chucknorrisjokes.joke.usecases.FetchRandomJokeUseCase.FetchRandomJokeResult
 import com.szpejsoft.chucknorrisjokes.joke.Joke
 import com.szpejsoft.chucknorrisjokes.screens.randomjoke.RandomJokeViewModel.RandomJokeResult.Error
 import com.szpejsoft.chucknorrisjokes.screens.randomjoke.RandomJokeViewModel.RandomJokeResult.None
