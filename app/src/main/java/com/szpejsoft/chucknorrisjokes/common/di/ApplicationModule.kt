@@ -1,7 +1,7 @@
-package com.szpejsoft.chucknorrisjokes.di
+package com.szpejsoft.chucknorrisjokes.common.di
 
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.addAdapter
+import com.szpejsoft.chucknorrisjokes.common.screentitle.AppBarTitleManager
 import com.szpejsoft.chucknorrisjokes.networking.ChuckNorrisApi
 import com.szpejsoft.chucknorrisjokes.networking.category.CategoriesAdapter
 import dagger.Module
@@ -42,5 +42,9 @@ class ApplicationModule {
     fun chuckNorrisApi(retrofit: Retrofit): ChuckNorrisApi {
         return retrofit.create(ChuckNorrisApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun appBarTitleManager(): AppBarTitleManager = AppBarTitleManager()
 
 }

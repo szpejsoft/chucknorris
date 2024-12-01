@@ -1,6 +1,8 @@
 package com.szpejsoft.chucknorrisjokes.screens.jokesbyquery
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
+import com.szpejsoft.chucknorrisjokes.common.screentitle.SetScreenTitleUseCase
 import com.szpejsoft.chucknorrisjokes.joke.FetchJokesByQueryUseCase
 import com.szpejsoft.chucknorrisjokes.joke.FetchJokesByQueryUseCase.FetchJokesByQueryResult
 import com.szpejsoft.chucknorrisjokes.joke.Joke
@@ -18,7 +20,8 @@ import javax.inject.Inject
 class JokesByQueryViewModel
 @Inject
 constructor(
-    private val fetchJokesByQueryUseCase: FetchJokesByQueryUseCase
+    private val fetchJokesByQueryUseCase: FetchJokesByQueryUseCase,
+    private val setScreenTitleUseCase: SetScreenTitleUseCase
 ) : ViewModel() {
     sealed class JokesByQueryResult {
         data object None : JokesByQueryResult()
@@ -38,5 +41,9 @@ constructor(
             }
             _jokesByQueryFlow.value = result
         }
+    }
+
+    fun setScreenTitle(@StringRes title: Int) {
+        setScreenTitleUseCase.setScreenTitle(title)
     }
 }

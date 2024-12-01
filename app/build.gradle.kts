@@ -13,7 +13,6 @@ android {
     defaultConfig {
         applicationId = "com.szpejsoft.chucknorrisjokes"
         minSdk = 29
-        //noinspection EditedTargetSdkVersion
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"

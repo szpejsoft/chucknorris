@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
+import com.szpejsoft.chucknorrisjokes.R
 import com.szpejsoft.chucknorrisjokes.joke.Joke
 import com.szpejsoft.chucknorrisjokes.screens.composables.AlertDialogWithButton
 import com.szpejsoft.chucknorrisjokes.screens.composables.ShowInitialState
@@ -29,13 +30,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RandomJokeScreen(
-    viewModel: RandomJokeViewModel = hiltViewModel()
+    viewModel: RandomJokeViewModel = hiltViewModel(),
 ) {
     val scope = rememberCoroutineScope()
     val randomJokeResult = viewModel.randomJokeFlow.collectAsState().value
 
     LaunchedEffect(Unit) {
         viewModel.fetchRandomJoke()
+        viewModel.setScreenTitle(R.string.app_name)
     }
 
     when (randomJokeResult) {

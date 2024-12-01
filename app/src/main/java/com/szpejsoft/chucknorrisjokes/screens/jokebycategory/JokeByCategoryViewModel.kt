@@ -1,6 +1,7 @@
 package com.szpejsoft.chucknorrisjokes.screens.jokebycategory
 
 import androidx.lifecycle.ViewModel
+import com.szpejsoft.chucknorrisjokes.common.screentitle.SetScreenTitleUseCase
 import com.szpejsoft.chucknorrisjokes.joke.FetchRandomJokeByCategoryUseCase
 import com.szpejsoft.chucknorrisjokes.joke.Joke
 import com.szpejsoft.chucknorrisjokes.screens.jokebycategory.JokeByCategoryViewModel.JokeByCategoryResult.*
@@ -18,7 +19,8 @@ import com.szpejsoft.chucknorrisjokes.joke.FetchRandomJokeByCategoryUseCase.Fetc
 class JokeByCategoryViewModel
 @Inject
 constructor(
-    private val fetchRandomJokeByCategoryUseCase: FetchRandomJokeByCategoryUseCase
+    private val fetchRandomJokeByCategoryUseCase: FetchRandomJokeByCategoryUseCase,
+    private val setScreenTitleUseCase: SetScreenTitleUseCase
 ) : ViewModel() {
 
     sealed class JokeByCategoryResult {
@@ -38,5 +40,10 @@ constructor(
             }
             _jokeByCategoryFlow.value = result
         }
+    }
+
+    fun setScreenTitle(title: String) {
+        setScreenTitleUseCase.setScreenTitle(title)
+
     }
 }

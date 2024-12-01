@@ -1,8 +1,12 @@
 package com.szpejsoft.chucknorrisjokes.screens.categories
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import com.szpejsoft.chucknorrisjokes.category.FetchCategoriesUseCase
-import com.szpejsoft.chucknorrisjokes.screens.categories.CategoriesViewModel.CategoriesResult.*
+import com.szpejsoft.chucknorrisjokes.common.screentitle.SetScreenTitleUseCase
+import com.szpejsoft.chucknorrisjokes.screens.categories.CategoriesViewModel.CategoriesResult.Error
+import com.szpejsoft.chucknorrisjokes.screens.categories.CategoriesViewModel.CategoriesResult.None
+import com.szpejsoft.chucknorrisjokes.screens.categories.CategoriesViewModel.CategoriesResult.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +18,8 @@ import javax.inject.Inject
 class CategoriesViewModel
 @Inject
 constructor(
-    private val fetchCategoriesUseCase: FetchCategoriesUseCase
+    private val fetchCategoriesUseCase: FetchCategoriesUseCase,
+    private val setScreenTitleUseCase: SetScreenTitleUseCase
 ) : ViewModel() {
 
     sealed class CategoriesResult {
@@ -26,7 +31,6 @@ constructor(
     val categoriesFlow: StateFlow<CategoriesResult> get() = _categoriesFlow
     private val _categoriesFlow = MutableStateFlow<CategoriesResult>(None)
 
-
     suspend fun fetchCategories(){
         withContext(Dispatchers.Main.immediate){
             val result = when(val useCaseResult = fetchCategoriesUseCase.fetchCategories()){
@@ -35,6 +39,10 @@ constructor(
             }
             _categoriesFlow.value = result
         }
+    }
+
+    fun setScreenTitle(@StringRes title: Int) {
+        setScreenTitleUseCase.setScreenTitle(title)
     }
 
 }

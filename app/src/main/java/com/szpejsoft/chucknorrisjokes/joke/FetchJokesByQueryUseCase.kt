@@ -1,6 +1,7 @@
 package com.szpejsoft.chucknorrisjokes.joke
 
-import com.szpejsoft.chucknorrisjokes.joke.FetchJokesByQueryUseCase.FetchJokesByQueryResult.*
+import com.szpejsoft.chucknorrisjokes.joke.FetchJokesByQueryUseCase.FetchJokesByQueryResult.Error
+import com.szpejsoft.chucknorrisjokes.joke.FetchJokesByQueryUseCase.FetchJokesByQueryResult.Success
 import com.szpejsoft.chucknorrisjokes.networking.ChuckNorrisApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

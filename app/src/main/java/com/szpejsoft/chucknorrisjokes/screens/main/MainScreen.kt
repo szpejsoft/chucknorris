@@ -1,5 +1,6 @@
 package com.szpejsoft.chucknorrisjokes.screens.main
 
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,10 +12,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.szpejsoft.chucknorrisjokes.R
+import com.szpejsoft.chucknorrisjokes.common.screentitle.Title
 import com.szpejsoft.chucknorrisjokes.screens.categories.CategoriesScreen
 import com.szpejsoft.chucknorrisjokes.screens.composables.TopBar
 import com.szpejsoft.chucknorrisjokes.screens.jokebycategory.JokeByCategoryScreen
@@ -24,17 +27,21 @@ import com.szpejsoft.chucknorrisjokes.screens.navigation.Navigator
 import com.szpejsoft.chucknorrisjokes.screens.navigation.Navigator.Companion.BOTTOM_TABS
 import com.szpejsoft.chucknorrisjokes.screens.navigation.Route
 import com.szpejsoft.chucknorrisjokes.screens.randomjoke.RandomJokeScreen
+import kotlinx.coroutines.flow.map
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    mainViewModel: MainViewModel = hiltViewModel()
+) {
 
     val navigator = remember { Navigator() }
     val currentBottomTab = navigator.currentTab.collectAsState().value
+    val appTitle = mainViewModel.observeScreenTitle().collectAsState().value
 
     Scaffold(
         topBar = {
             TopBar(
-                title = stringResource(R.string.app_name),
+                title = getScreenTitleText(appTitle),
                 isRootRoute = navigator.isRootRoute.collectAsState().value,
                 onBackClicked = { navigator.navigateBack() }
             )
@@ -114,4 +121,10 @@ fun MainScreenContent(
             }
         }
     }
+}
+
+@Composable
+fun getScreenTitleText(title: Title): String {
+    Log.d("ptsz", "getScreenTitleText: $title ")
+    return if (title.hasText) title.text!! else stringResource(id = title.resId!!)
 }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.szpejsoft.chucknorrisjokes.R
 import com.szpejsoft.chucknorrisjokes.screens.categories.CategoriesViewModel.CategoriesResult.Error
 import com.szpejsoft.chucknorrisjokes.screens.categories.CategoriesViewModel.CategoriesResult.None
 import com.szpejsoft.chucknorrisjokes.screens.categories.CategoriesViewModel.CategoriesResult.Success
@@ -13,8 +14,6 @@ import com.szpejsoft.chucknorrisjokes.screens.composables.ShowInitialState
 import com.szpejsoft.chucknorrisjokes.screens.composables.ShowList
 import kotlinx.coroutines.launch
 
-
-//TODO add pull to refresh
 @Composable
 fun CategoriesScreen(
     viewModel: CategoriesViewModel = hiltViewModel(),
@@ -25,6 +24,7 @@ fun CategoriesScreen(
 
     LaunchedEffect(Unit) {
         viewModel.fetchCategories()
+        viewModel.setScreenTitle(R.string.screen_categories_title)
     }
 
     when (categoriesResult) {
